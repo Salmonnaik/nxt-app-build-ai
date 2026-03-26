@@ -9,20 +9,29 @@ console.log('API Base URL:', BASE_URL);
 
 const getHeaders = () => {
   const token = Cookies.get('token');
-  return token ? { Authorization: `Bearer ${token}` } : {};
+  return {
+    'Content-Type': 'application/json',
+    ...(token && { Authorization: `Bearer ${token}` })
+  };
 };
 
 const api = {
   get: async (url) => {
     console.log('Making GET request to:', `${BASE_URL}${url}`);
-    const response = await axios.get(`${BASE_URL}${url}`, { headers: getHeaders() });
+    const response = await axios.get(`${BASE_URL}${url}`, { 
+      headers: getHeaders(),
+      withCredentials: true 
+    });
     return response;
   },
   post: async (url, data) => {
     console.log('Making POST request to:', `${BASE_URL}${url}`);
     console.log('Request data:', data);
     try {
-      const response = await axios.post(`${BASE_URL}${url}`, data, { headers: getHeaders() });
+      const response = await axios.post(`${BASE_URL}${url}`, data, { 
+        headers: getHeaders(),
+        withCredentials: true 
+      });
       return response;
     } catch (error) {
       console.error('API Error:', error);
@@ -31,11 +40,17 @@ const api = {
     }
   },
   put: async (url, data) => {
-    const response = await axios.put(`${BASE_URL}${url}`, data, { headers: getHeaders() });
+    const response = await axios.put(`${BASE_URL}${url}`, data, { 
+      headers: getHeaders(),
+      withCredentials: true 
+    });
     return response;
   },
   delete: async (url) => {
-    const response = await axios.delete(`${BASE_URL}${url}`, { headers: getHeaders() });
+    const response = await axios.delete(`${BASE_URL}${url}`, { 
+      headers: getHeaders(),
+      withCredentials: true 
+    });
     return response;
   },
 };
