@@ -3,6 +3,8 @@ import Cookies from 'js-cookie';
 
 const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
+console.log('Environment:', import.meta.env.MODE);
+console.log('VITE_API_URL:', import.meta.env.VITE_API_URL);
 console.log('API Base URL:', BASE_URL);
 
 const getHeaders = () => {
@@ -19,8 +21,14 @@ const api = {
   post: async (url, data) => {
     console.log('Making POST request to:', `${BASE_URL}${url}`);
     console.log('Request data:', data);
-    const response = await axios.post(`${BASE_URL}${url}`, data, { headers: getHeaders() });
-    return response;
+    try {
+      const response = await axios.post(`${BASE_URL}${url}`, data, { headers: getHeaders() });
+      return response;
+    } catch (error) {
+      console.error('API Error:', error);
+      console.error('Error Response:', error.response);
+      throw error;
+    }
   },
   put: async (url, data) => {
     const response = await axios.put(`${BASE_URL}${url}`, data, { headers: getHeaders() });
