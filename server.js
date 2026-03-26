@@ -11,8 +11,10 @@ dotenv.config();
 
 const app = express();
 
-// Connect to database
-connectDB();
+// Health check endpoint - before DB connection
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'OK', message: 'Server is running', timestamp: new Date().toISOString() });
+});
 
 // Middleware
 app.use(cors({
@@ -21,9 +23,9 @@ app.use(cors({
 }));
 app.use(express.json());
 
-// Health check endpoint
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'OK', message: 'Server is running' });
+// Connect to database (non-blocking)
+connectDB().catch(err => {
+  console.error('Database connection failed, but server continues:', err.message);
 });
 
 // Routes
@@ -41,4 +43,5 @@ const PORT = process.env.PORT || 10000;
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
+  console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
 });
