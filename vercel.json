@@ -9,14 +9,14 @@
       }
     }
   ],
-  "routes": [
+  "rewrites": [
     {
-      "src": "/api/(.*)",
-      "dest": "https://nxt-app-build-ai-production.up.railway.app/api/$1"
+      "source": "/api/(.*)",
+      "destination": "https://nxt-app-build-ai-production.up.railway.app/api/$1"
     },
     {
-      "src": "/(.*)",
-      "dest": "/client/$1"
+      "source": "/(.*)",
+      "destination": "/client/$1"
     }
   ]
 }
