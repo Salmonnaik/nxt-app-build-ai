@@ -1,7 +1,7 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
-const BASE_URL = 'http://localhost:5000/api';
+const BASE_URL = import.meta.env.VITE_API_URL || 'https://nxt-app-build-ai-production.up.railway.app/api';
 
 const getHeaders = () => {
   const token = Cookies.get('token');
